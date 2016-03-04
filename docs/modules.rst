@@ -1,0 +1,4 @@
+Spectastic
+==========
+
+.. include:: spectastic.rst
