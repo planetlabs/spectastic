@@ -298,12 +298,12 @@ class RequestValidationTests(unittest.TestCase):
 
     def test_query_param_types(self):
         """
-        Ensures that we validates types of query parameters. There
-        is additional coverage in the parameter coercion tests.
+        Ensures that we validates types of query parameters.
         """
         cases = [
             {'type': 'string', 'value': 'dfs', 'success': True},
             {'type': 'integer', 'value': '5', 'success': True},
+            {'type': 'integer', 'value': '-5', 'success': True},
             {'type': 'number', 'value': '5', 'success': True},
             {'type': 'boolean', 'value': 'true', 'success': True},
 
