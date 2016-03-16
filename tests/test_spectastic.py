@@ -328,7 +328,6 @@ class RequestValidationTests(unittest.TestCase):
                 )
             else:
                 with self.assertRaises(ValidationErrors):
-                    print case
                     operation.validate_request_query({'param': case['value']})
 
     def test_header_success(self):
