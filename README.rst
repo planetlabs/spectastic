@@ -3,7 +3,7 @@ Spectastic
 ===============================
 
 .. image:: https://img.shields.io/travis/planetlabs/spectastic.svg
-        :target: https://travis-ci.com/planetlabs/spectastic
+        :target: https://travis-ci.org/planetlabs/spectastic
 
 .. image:: https://img.shields.io/pypi/v/spectastic.svg
         :target: https://pypi.python.org/pypi/spectastic
