@@ -70,8 +70,8 @@ exception, which contains an ``errors`` property consisting of a list of
   to be a werkzeug Request. See :class:`~spectastic.request.BasicRequest` for
   an example.
 
-  Spectastic is :class:`~werkzeug.datastructures.MuliDict` and
-  :class:`~werkzeug.datastructures.Header` aware. These data structures
+  Spectastic is :class:`~werkzeug.datastructures.MultiDict` and
+  :class:`~werkzeug.datastructures.Headers` aware. These data structures
   facilitate query parameters / headers that occur multiple times in a request
   e.g. a query such as "http://example.com?search=foo&search=bar".
 
