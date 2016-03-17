@@ -32,7 +32,7 @@ test_requirements = [
 
 setup(
     name='spectastic',
-    version='0.1.1',
+    version='0.1.2',
     description="Request and response validation compatible with swagger.",
     long_description=readme + '\n\n' + history,
     author="Jacob Straszynski",
