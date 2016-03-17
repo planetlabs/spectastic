@@ -312,6 +312,10 @@ class RequestValidationTests(unittest.TestCase):
             {'type': 'boolean', 'value': 'xxx', 'success': False},
             {'type': 'string', 'format': 'date-time', 'value': 'xxx',
              'success': False},
+            {'type': 'string', 'format': 'date-time',
+             'value': '2015-05-05T00:00:00.123456Z', 'success': True},
+            {'type': 'string', 'format': 'date-time',
+             'value': '2015-05-05T00:00:00.123456+00:00', 'success': True},
         ]
         for case in cases:
             param = generate_param(
