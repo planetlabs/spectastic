@@ -40,7 +40,11 @@ import spectastic
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.intersphinx',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -276,3 +280,8 @@ texinfo_documents = [
 
 # Get constructor docs to show up.
 autoclass_content = 'both'
+intersphinx_mapping = {
+    'python': ('http://python.readthedocs.org/en/latest/', None),
+    'flask': ('http://flask.readthedocs.org/en/latest/', None),
+    'werkzeug': ('http://werkzeug.readthedocs.org/en/latest/', None),
+}
