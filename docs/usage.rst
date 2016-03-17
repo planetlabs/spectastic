@@ -99,8 +99,8 @@ callable receives any :class:`~spectastic.errors.ValidationErrors` that may
 have occured and returns an appropriate flask-compatible response. You can use
 this to customize your error output.
 
-The default responder simply outputs the general structure shown below along
-with a 400 status code::
+The :func:`~spectastic.contrib.flask_utils.default_responder` simply outputs
+the general structure shown below along with a 400 status code::
 
     {
       "errors": [
