@@ -24,6 +24,7 @@ test_requirements = [
     'flask',
     'pytest',
     'mock',
+    'enum34',
     'hypothesis',
     'pytest-xdist',
     'sphinx_rtd_theme'
