@@ -110,6 +110,20 @@ SPEC = {
                 },
             ],
         },
+        'SweetCandyItem': {
+            'description': 'A candy item that is sweet.',
+            'allOf': [
+                {'$ref': '#/definitions/CandyItem'},
+                {
+                    'properties': {
+                        'sweetness': {
+                            'type': 'string',
+                        },
+                    },
+                    'required': ['sweetness'],
+                },
+            ],
+        },
     },
     'paths': {
         # Path parameters, multiple methods, and body parameters.
