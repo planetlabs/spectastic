@@ -28,17 +28,21 @@ def validate_discriminator(validator, discriminator, instance, schema):
         definition = deepcopy(
             validator.schema['definitions'][instance[discriminator]]
         )
+
         # Generally, for objects with discriminators, we have a list of
         # property schemas. E.g. CandyItem includes allOf with Item and
         # the CandyItem's properties. If we re-apply validation using
         # the discriminated schema, it will recursively re-evaluate
         # the parent schema. This is inelegant, but jsonschema wasn't
         # designed with this in mind.
-        if definition.get('allOf'):
-            for index, spec in enumerate(definition['allOf']):
-                if 'discriminator' in spec:
-                    # If the current spec has a discriminator, pop it.
-                    definition['allOf'].pop(index)
+        def _clear_discriminators(definition):
+            if definition.get('allOf'):
+                for index, spec in enumerate(definition['allOf']):
+                    if 'discriminator' in spec:
+                        # If the current spec has a discriminator, pop it.
+                        definition['allOf'].pop(index)
+                    _clear_discriminators(definition['allOf'][index])
+        _clear_discriminators(definition)
 
         for error in validator.iter_errors(instance, definition):
             # Workaround for the required validator not being attached to

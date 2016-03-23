@@ -594,6 +594,20 @@ class RequestValidationTests(unittest.TestCase):
         body_errors.assert_called_once_with(body)
         header_errors.assert_called_once_with(Headers(headers))
 
+    def test_complex_allof_discriminator(self):
+        """
+        In cases like SweetCandyItem which extends CandyItem, which extends
+        Item, we want to ensure things behave sensibly.
+        """
+        body = {
+            'type': 'SweetCandyItem',
+            'color': 'red',
+        }
+        operation = Operation.from_schema(Schema(SPEC), 'CreateItem')
+        with self.assertRaises(ValidationErrors) as exc_info:
+            operation.validate_request_body(body)
+        self.assertEqual('sweetness', exc_info.exception.errors[0].field)
+
 
 if __name__ == '__main__':
     import sys
