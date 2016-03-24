@@ -294,15 +294,13 @@ class Operation(object):
                 return
 
             for error in self.validator.iter_errors(request_body, body_schema):
-                if error.validator == 'required':
-                    path = deepcopy(error.path)
-                    path.append(*error.validator_value)
-                else:
-                    path = error.path
-
+                # Relies on our overriden 'required' validator to provide
+                # an error path.
+                path = error.path
                 yield FieldError(error.message, 'body', '.'.join(map(
                     str, path
                 )))
+
 
     def iter_request_path_errors(self, request_path):
         """
