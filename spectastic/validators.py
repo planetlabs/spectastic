@@ -50,15 +50,27 @@ def validate_discriminator(validator, discriminator, instance, schema):
             if error.validator == 'required':
                 yield jsonschema.ValidationError(
                     error.message,
-                    path=error.validator_value
+                    path=error.path,
                 )
             else:
                 yield error
+
+
+def validator_required(validator, required, instance, schema):
+    if not validator.is_type(instance, "object"):
+        return
+    for property in required:
+        if property not in instance:
+            yield jsonschema.ValidationError(
+                "%r is a required property" % property,
+                path=[property],
+            )
 
 #: Extends the Draft4Validator with support for discriminators
 SwaggerValidator = jsonschema.validators.extend(
     jsonschema.Draft4Validator,
     validators={
-        "discriminator": validate_discriminator
+        "discriminator": validate_discriminator,
+        "required": validator_required,
     },
 )
