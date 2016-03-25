@@ -406,12 +406,6 @@ class Operation(object):
                         'query',
                         schema['name']
                     )
-            else:
-                yield FieldError(
-                    'Unknown field {}'.format(name),
-                    'query',
-                    name,
-                )
 
         for name, schema in query_schemas.iteritems():
             if schema.get('required', False) and name not in query_params:
