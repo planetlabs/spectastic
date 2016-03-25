@@ -42,6 +42,8 @@ def validate_discriminator(validator, discriminator, instance, schema):
                         # If the current spec has a discriminator, pop it.
                         definition['allOf'].pop(index)
                     _clear_discriminators(definition['allOf'][index])
+            if 'discriminator' in definition:
+                definition.pop('discriminator')
         _clear_discriminators(definition)
 
         for error in validator.iter_errors(instance, definition):

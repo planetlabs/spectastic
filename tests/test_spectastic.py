@@ -608,6 +608,16 @@ class RequestValidationTests(unittest.TestCase):
             operation.validate_request_body(body)
         self.assertEqual('sweetness', exc_info.exception.errors[0].field)
 
+    def test_discriminator_non_allof(self):
+        """
+        Regression test for discriminator's that are not within an allOf block.
+        """
+        body = {
+            'type': 'Item',
+        }
+        operation = Operation.from_schema(Schema(SPEC), 'CreateItem')
+        operation.validate_request_body(body)
+
 
 if __name__ == '__main__':
     import sys
