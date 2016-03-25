@@ -274,27 +274,13 @@ class RequestValidationTests(unittest.TestCase):
             operation.validate_request_query(query)
         self.assertEqual('search', exc_info.exception.errors[0].field)
 
-    def test_unknown_query_parameter_error(self):
+    def test_allow_unknown_query_parameter(self):
         """
-        Validates that an operation's query parameters fail validation when
-        they're unknown.
+        Allow unrecognized query parameters.
         """
         query = {'search': 'woot', 'unKnown_param': 'foo'}
         operation = Operation.from_schema(Schema(SPEC), 'Search')
-        with self.assertRaises(ValidationErrors) as exc_info:
-            operation.validate_request_query(query)
-        self.assertEqual('unKnown_param', exc_info.exception.errors[0].field)
-
-    def test_case_sensitive_parameter_error(self):
-        """
-        Validates that an operation's query parameters fail validation when
-        they're similar, but not the correct case.
-        """
-        query = {'sEarch': 'woot', 'search': 'woot'}
-        operation = Operation.from_schema(Schema(SPEC), 'Search')
-        with self.assertRaises(ValidationErrors) as exc_info:
-            operation.validate_request_query(query)
-        self.assertEqual('sEarch', exc_info.exception.errors[0].field)
+        self.assertEqual(True, operation.validate_request_query(query))
 
     def test_query_param_types(self):
         """
