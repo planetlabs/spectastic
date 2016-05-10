@@ -151,6 +151,14 @@ class TestBasicRequest(unittest.TestCase):
             request.body,
         )
 
+    def test_request_body_empty(self):
+        request = BasicRequest(
+            '', {'content-type': 'application/json'}, '', '')
+        self.assertEqual(
+            None,
+            request.body,
+        )
+
     def test_request_body_raw(self):
         request = BasicRequest(
             'hello', {}, '', '')

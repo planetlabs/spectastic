@@ -30,7 +30,9 @@ class BasicRequest(object):
         if 'content-type' in headers:
             value = headers['content-type']
             if value == 'application/json':
-                if isinstance(body, basestring):
+                if isinstance(body, basestring) and body == '':
+                    body = None
+                elif isinstance(body, basestring):
                     try:
                         body = json.loads(body)
                     except:
