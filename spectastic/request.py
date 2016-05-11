@@ -3,6 +3,10 @@ import json
 from werkzeug.datastructures import MultiDict, Headers
 
 
+class MalformedBodyError(Exception):
+    pass
+
+
 class BasicRequest(object):
     """
     Demonstrates the most basic interface required by spectastic for proper
@@ -36,7 +40,7 @@ class BasicRequest(object):
                     try:
                         body = json.loads(body)
                     except:
-                        raise ValueError((
+                        raise MalformedBodyError((
                             'Body could not be parsed as '
                             'json despite content-type'
                         ))

@@ -16,8 +16,8 @@ except ImportError:
     raise
 
 from ..operation import Operation
-from ..errors import ValidationErrors
-from ..request import BasicRequest
+from ..errors import ValidationErrors, FieldError
+from ..request import BasicRequest, MalformedBodyError
 
 
 def convert_request(flask_request):
@@ -98,10 +98,19 @@ def _validate_route(schema, operation_id, responder):
     Broken out into a function for decorator testability.
     """
     operation = Operation.from_schema(schema, operation_id)
+
     try:
-        operation.validate_request(convert_request(flask.request))
+        request = convert_request(flask.request)
+    except MalformedBodyError as e:
+        return responder(ValidationErrors(errors=[
+            FieldError(e.msg, 'body', '')
+        ]))
+
+    try:
+        operation.validate_request(request)
     except ValidationErrors as e:
         return responder(e)
+
     return
 
 
