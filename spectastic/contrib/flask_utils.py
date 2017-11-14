@@ -32,6 +32,7 @@ def convert_request(flask_request):
         flask.request.headers,
         flask.request.args,
         flask.request.path,
+        method=flask.request.method
     )
 
 

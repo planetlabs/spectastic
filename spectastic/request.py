@@ -8,7 +8,7 @@ class BasicRequest(object):
     Demonstrates the most basic interface required by spectastic for proper
     request validation.
     """
-    def __init__(self, body, headers, query, path):
+    def __init__(self, body, headers, query, path, method=None):
         """
         :param dict headers: A dictionary-like object of headers.
         :param dict query: A dictionary-like object of query parameters.
@@ -27,7 +27,7 @@ class BasicRequest(object):
         if not hasattr(query, 'iteritems'):
             raise ValueError('Query is not dictionary-like')
 
-        if 'content-type' in headers:
+        if 'content-type' in headers and method != 'GET':
             value = headers['content-type']
             if value == 'application/json':
                 if isinstance(body, basestring) and body == '':
