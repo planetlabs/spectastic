@@ -109,3 +109,20 @@ Tips
 To run a subset of tests::
 
     $ python -m unittest tests.test_spectastic
+
+Cutting a Release
+-----------------
+Install bumpversion::
+
+    $ pip install bumpversion
+
+Decide on the kind of version bump appropriate since the last release::
+
+    $ bumpversion patch
+
+This will update the setup.py file as well as the module's __version__
+property and commit the changes.
+
+Publish to pypi::
+
+    $ make release
