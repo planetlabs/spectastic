@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
-from urllib2 import unquote
 from itertools import chain
+from six.moves.urllib.parse import unquote
 import jsonschema
 import re
+import six
 
 import logging
 logger = logging.getLogger(__name__)
@@ -40,8 +41,8 @@ def find_operation(schema, operation_id):
     """
     # TODO a reverse index would be quicker but would require guarantees
     # that the schema dictionary is immutable.
-    for route, schema in schema['paths'].iteritems():
-        for method, subschema in schema.iteritems():
+    for route, schema in six.iteritems(schema['paths']):
+        for method, subschema in six.iteritems(schema):
             if subschema.get('operationId') == operation_id:
                 return (route, method, subschema)
     raise OperationNotFound('Could not find {}'.format(operation_id))
@@ -268,8 +269,8 @@ class Operation(object):
         match = self._path_matcher.match(path)
         if match:
             return {
-                key: unquote(value).decode('utf8')
-                for key, value in match.groupdict().iteritems()
+                key: unquote(value)
+                for key, value in six.iteritems(match.groupdict())
             }
         else:
             raise InvalidPath()
@@ -285,7 +286,8 @@ class Operation(object):
         body_param, body_schema = self.body_schema()
         if body_param:
             if body_param.get('required') == True \
-                    and not hasattr(request_body, 'iteritems'):
+                    and not (hasattr(request_body, 'iteritems') \
+                             or hasattr(request_body, 'items')):
                 yield FieldError(
                     "A request body is required and must be an object",
                     'body',
@@ -312,7 +314,7 @@ class Operation(object):
             return
 
         params = self.extract_path_args(request_path)
-        for param, value in params.iteritems():
+        for param, value in six.iteritems(params):
             param = param.lower()
             # The input is a string that we need to type case at least partially
             # before passing to jsonschema, which expects the primitive type
@@ -333,7 +335,7 @@ class Operation(object):
                     yield FieldError(
                         error.message, 'path', schema['name']
                     )
-        for name, schema in path_schemas.iteritems():
+        for name, schema in six.iteritems(path_schemas):
             if schema.get('required') == True and schema['name'] not in params:
                 yield FieldError(
                     'Required path parameter is missing',
@@ -352,13 +354,13 @@ class Operation(object):
 
         request_headers = Headers(request_headers)
 
-        for header, value in request_headers.iteritems():
+        for header, value in six.iteritems(request_headers):
             if header in header_schemas:
                 schema = self.header_schema(header)
                 for error in self.validator.iter_errors(value, schema):
                     yield FieldError(error.message, 'header', header)
 
-        for name, schema in header_schemas.iteritems():
+        for name, schema in six.iteritems(header_schemas):
             if schema.get('required') and name.lower() \
                     not in request_headers:
                 yield FieldError(
@@ -383,7 +385,7 @@ class Operation(object):
         else:
             iterargs = {}
 
-        for name, value in query_params.iteritems(**iterargs):
+        for name, value in six.iteritems(query_params, **iterargs):
             if name in query_schemas:
                 schema = deepcopy(self.query_schema(name))
                 # The required validator won't work in the context of a single
@@ -407,7 +409,7 @@ class Operation(object):
                         schema['name']
                     )
 
-        for name, schema in query_schemas.iteritems():
+        for name, schema in six.iteritems(query_schemas):
             if schema.get('required', False) and name not in query_params:
                 yield FieldError(
                     'Required query parameter is missing',

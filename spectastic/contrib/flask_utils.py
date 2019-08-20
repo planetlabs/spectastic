@@ -3,7 +3,11 @@ logger = logging.getLogger(__name__)
 
 from functools import wraps
 import json
-import collections
+import six
+if six.PY2:
+    import collections
+else:
+    import collections.abc as collections
 
 # Flask is a test only dependency. We let people use this module without
 # triggering a flask install.

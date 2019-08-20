@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
+import six
 
 
 def resolve_ref(schema_dict, ref):
@@ -27,7 +28,7 @@ def _resolve_current(schema_dict, current):
             current.clear()
             current.update(resolved)
         else:
-            for key, value in current.iteritems():
+            for key, value in six.iteritems(current):
                 _resolve_current(schema_dict, value)
     elif isinstance(current, list):
         for key, value in enumerate(current):

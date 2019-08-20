@@ -1,4 +1,5 @@
 import json
+import six
 
 from werkzeug.datastructures import MultiDict, Headers
 
@@ -17,22 +18,22 @@ class BasicRequest(object):
         :param string path: The request path of the request.
         """
 
-        if not hasattr(headers, 'iteritems'):
+        if not (hasattr(headers, 'iteritems') or hasattr(headers, 'items')):
             raise ValueError('Headers are not dictionary-like')
 
         # Coerce headers and query.
         headers = Headers(headers)
         query = MultiDict(query)
 
-        if not hasattr(query, 'iteritems'):
+        if not (hasattr(query, 'iteritems') or hasattr(query, 'items')):
             raise ValueError('Query is not dictionary-like')
 
         if 'content-type' in headers:
             value = headers['content-type']
             if value == 'application/json':
-                if isinstance(body, basestring) and body == '':
+                if body == '':
                     body = None
-                elif isinstance(body, basestring):
+                elif isinstance(body, (six.binary_type, six.string_types)):
                     try:
                         body = json.loads(body)
                     except:

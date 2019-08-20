@@ -18,6 +18,8 @@ requirements = [
     'jsonschema',
     'werkzeug',
     'strict_rfc3339',
+    'six',
+    'future'
 ]
 
 test_requirements = [
