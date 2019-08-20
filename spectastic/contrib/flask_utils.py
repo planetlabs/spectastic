@@ -31,7 +31,6 @@ def convert_request(flask_request):
 
     :return: :class:`~spectastic.request.BasicRequest`
     """
-    print('flask.request.data', flask.request.data)
     return BasicRequest(
         flask.request.data,
         flask.request.headers,
