@@ -320,4 +320,4 @@ def generate_schema(methods=None, base_path='/'):
 
 
 if __name__ == '__main__':
-    print json.dumps(SPEC, indent=2)
+    print(json.dumps(SPEC, indent=2))

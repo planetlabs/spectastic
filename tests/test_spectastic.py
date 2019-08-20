@@ -7,9 +7,11 @@ test_spectastic
 
 Tests for `spectastic` module.
 """
+from builtins import str
 from math import isnan
 from mock import patch
 import json
+import six
 
 from hypothesis import (
     strategies as st,
@@ -73,7 +75,7 @@ class TestSchema(unittest.TestCase):
                 path = ['spec']
 
             if isinstance(current, dict):
-                for key, value in current.iteritems():
+                for key, value in six.iteritems(current):
                     if key == '$ref':
                         self.fail('Found a ref at {}:{}'.format(
                             path + key, value
@@ -90,7 +92,7 @@ class TestCoercion(unittest.TestCase):
 
     @given(st.integers())
     def test_coercion_int(self, hypo):
-        value = unicode(hypo)
+        value = str(hypo)
         schema = {
             'name': 'param',
             'in': 'path',
@@ -115,7 +117,7 @@ class TestCoercion(unittest.TestCase):
 
     @given(st.text())
     def test_coercion_text(self, hypo):
-        value = unicode(hypo)
+        value = str(hypo)
         schema = {
             'name': 'param',
             'in': 'path',
@@ -531,7 +533,7 @@ class RequestValidationTests(unittest.TestCase):
             },
         }
 
-        for case, expected in successes.iteritems():
+        for case, expected in six.iteritems(successes):
             self.assertEqual(
                 expected,
                 operation.extract_path_args(case)
@@ -543,7 +545,7 @@ class RequestValidationTests(unittest.TestCase):
             # Correct format
             '/items/5': True,
         }
-        for case, expected in successes.iteritems():
+        for case, expected in six.iteritems(successes):
             self.assertEqual(
                 expected,
                 operation.validate_request_path(case)
@@ -555,7 +557,7 @@ class RequestValidationTests(unittest.TestCase):
             '/items/der': 'ItemID',
             '/items/': 'ItemID',
         }
-        for case, expected in errors.iteritems():
+        for case, expected in six.iteritems(errors):
             with self.assertRaises(ValidationErrors) as exc_info:
                 operation.validate_request_path(case)
             self.assertEqual(expected, exc_info.exception.errors[0].field)

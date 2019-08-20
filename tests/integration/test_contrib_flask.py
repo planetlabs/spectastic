@@ -1,3 +1,4 @@
+from builtins import str
 from mock import patch
 import json
 import unittest
@@ -19,10 +20,10 @@ class TestFlaskDecorator(unittest.TestCase):
             data='{"sdfs": "sdfs"}',
             headers={'Content-Type': 'application/json'},
         )
-        self.assertEquals(400, response.status_code)
+        self.assertEqual(400, response.status_code)
 
         payload = json.loads(response.data)
-        self.assertEquals(payload, {
+        self.assertEqual(payload, {
             'errors': [
                 {
                     "location": "body",
@@ -42,8 +43,8 @@ class TestFlaskDecorator(unittest.TestCase):
             response = self.app.get(
                 '/items/{}'.format(case),
             )
-            self.assertEquals(401, response.status_code)
-            self.assertEquals('failed', response.data)
+            self.assertEqual(401, response.status_code)
+            self.assertEqual('failed', response.data.decode('utf-8'))
             self.assertIn("X-Sad", response.headers)
 
     @patch('flask.request')
