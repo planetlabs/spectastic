@@ -2,7 +2,7 @@
 
 __author__ = 'Jacob Straszynski'
 __email__ = 'jacob.straszynski@planet.com'
-__version__ = '0.2.5'
+__version__ = '0.3.0'
 
 # flake8: noqa
 from .operation import (
