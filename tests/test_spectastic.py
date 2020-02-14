@@ -411,6 +411,20 @@ class RequestValidationTests(unittest.TestCase):
             operation.validate_request_body(body)
         self.assertEqual('type', exc_info.exception.errors[0].field)
 
+    def test_body_error_list_discriminator(self):
+        """
+        Validates that an operation's response body fails validation when
+        the discriminator is a list.
+        """
+        body = {
+            'type': ['CandyItem'],
+            'color': 'red',
+        }
+        operation = Operation.from_schema(Schema(SPEC), 'CreateItem')
+        with self.assertRaises(ValidationErrors) as exc_info:
+            operation.validate_request_body(body)
+        self.assertEqual('type', exc_info.exception.errors[0].field)
+
     def test_body_failures_non_object(self):
         """
         Validates an empty request body.
