@@ -15,6 +15,10 @@ def validate_discriminator(validator, discriminator, instance, schema):
         # discrminator is a required field.
         return
 
+    if isinstance(instance[discriminator], list):
+        # This will fail type validation
+        return
+
     if instance[discriminator] not in validator.schema['definitions']:
         yield jsonschema.ValidationError(
             "{} is not a valid {} for discriminator".format(
